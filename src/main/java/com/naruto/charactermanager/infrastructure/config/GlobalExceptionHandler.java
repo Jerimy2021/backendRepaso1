@@ -34,12 +34,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WebException.class)
     public ResponseEntity<Map<String, Object>> handleWebException(WebException ex) {
         Map<String, Object> body = new HashMap<>();
+        HttpStatus httpStatus = ex.getStatus() > 0 ? HttpStatus.valueOf(ex.getStatus()) : HttpStatus.BAD_REQUEST;
         body.put("timestamp", LocalDateTime.now());
-        body.put("status", ex.getStatus() > 0 ? ex.getStatus() : HttpStatus.BAD_REQUEST.value());
+        body.put("status", httpStatus.value());
         body.put("error", ex.getTitle());
         body.put("message", ex.getMessage());
         
-        return ResponseEntity.status(ex.getStatus() > 0 ? ex.getStatus() : HttpStatus.BAD_REQUEST).body(body);
+        return ResponseEntity.status(httpStatus).body(body);
     }
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
