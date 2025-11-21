@@ -1,6 +1,7 @@
 package com.naruto.charactermanager.presentation.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -17,7 +18,6 @@ import com.naruto.charactermanager.presentation.dto.personaje.PersonajeResponseD
 import com.naruto.charactermanager.presentation.shared.web.WebException;
 import com.naruto.charactermanager.presentation.shared.web.WebResponse;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/personajes")
 @Tag(name = "Personajes", description = "Endpoints para gestión de personajes de Naruto")
+@SecurityRequirement(name = "bearer-jwt")
 @CrossOrigin(origins = "*")
 public class PersonajeController {
     

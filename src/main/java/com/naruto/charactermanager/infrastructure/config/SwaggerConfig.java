@@ -2,6 +2,8 @@ package com.naruto.charactermanager.infrastructure.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -34,11 +36,38 @@ public class SwaggerConfig {
 
 Esta API permite gestionar personajes del universo Naruto y comentarios sobre ellos.
 Incluye operaciones CRUD completas para personajes y comentarios.
+
+## Autenticación
+
+Para usar los endpoints protegidos, primero debes:
+1. Hacer login en `/api/auth/login` para obtener un token JWT
+2. Hacer clic en el botón "Authorize" (🔒) en la parte superior de esta página
+3. Ingresar el token en el formato: `Bearer <tu-token-aqui>`
+4. Hacer clic en "Authorize" y luego en "Close"
+
+El token se incluirá automáticamente en todas las peticiones a endpoints protegidos.
                 """);
+
+        // Configurar esquema de seguridad JWT
+        SecurityScheme securityScheme = new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT")
+                .description("Ingresa el token JWT obtenido del endpoint de login. Formato: Bearer <token>");
+
+        // Agregar el esquema de seguridad
+        io.swagger.v3.oas.models.Components components = new io.swagger.v3.oas.models.Components()
+                .addSecuritySchemes("bearer-jwt", securityScheme);
+
+        // Agregar requerimiento de seguridad global (opcional, se puede sobrescribir en endpoints específicos)
+        SecurityRequirement securityRequirement = new SecurityRequirement()
+                .addList("bearer-jwt");
 
         return new OpenAPI()
                 .servers(List.of(localServer))
-                .info(info);
+                .info(info)
+                .components(components)
+                .addSecurityItem(securityRequirement);
     }
 }
 

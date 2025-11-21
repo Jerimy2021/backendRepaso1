@@ -1,6 +1,7 @@
 package com.naruto.charactermanager.presentation.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/comentario")
 @Tag(name = "Comentarios", description = "Endpoints para gestión de comentarios sobre personajes")
+@SecurityRequirement(name = "bearer-jwt")
 @CrossOrigin(origins = "*")
 public class ComentarioController {
     
